@@ -1,9 +1,8 @@
-import random # For generating random numbers
-import sys # We will use sys.exit to exit the program
+import random 
+import sys 
 import pygame
-from pygame.locals import * # Basic pygame imports
+from pygame.locals import * 
 
-# Global Variables for the game
 FPS = 32
 SCREENWIDTH = 289
 SCREENHEIGHT = 511
@@ -16,10 +15,6 @@ BACKGROUND = 'gallery/sprites/background.png'
 PIPE = 'gallery/sprites/pipe.png'
 
 def welcomeScreen():
-    """
-    Shows welcome images on the screen
-    """
-
     playerx = int(SCREENWIDTH/5)
     playery = int((SCREENHEIGHT - GAME_SPRITES['player'].get_height())/2)
     messagex = int((SCREENWIDTH - GAME_SPRITES['message'].get_width())/2)
@@ -164,9 +159,6 @@ def isCollide(playerx, playery, upperPipes, lowerPipes):
     return False
 
 def getRandomPipe():
-    """
-    Generate positions of two pipes(one bottom straight and one top rotated ) for blitting on the screen
-    """
     pipeHeight = GAME_SPRITES['pipe'][0].get_height()
     offset = SCREENHEIGHT/3
     y2 = offset + random.randrange(0, int(SCREENHEIGHT - GAME_SPRITES['base'].get_height()  - 1.2 *offset))
@@ -179,13 +171,9 @@ def getRandomPipe():
     return pipe
 
 
-
-
-
-
 if __name__ == "__main__":
-    # This will be the main point from where our game will start
-    pygame.init() # Initialize all pygame's modules
+    
+    pygame.init() 
     FPSCLOCK = pygame.time.Clock()
     pygame.display.set_caption('Flappy Bird by CodeWithHarry')
     GAME_SPRITES['numbers'] = ( 
@@ -218,5 +206,5 @@ if __name__ == "__main__":
     GAME_SPRITES['player'] = pygame.image.load(PLAYER).convert_alpha()
 
     while True:
-        welcomeScreen() # Shows welcome screen to the user until he presses a button
-        mainGame() # This is the main game function 
+        welcomeScreen() 
+        mainGame() 
