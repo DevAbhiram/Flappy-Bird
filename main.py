@@ -4,8 +4,8 @@ import pygame
 from pygame.locals import * 
 
 FPS = 32
-SCREENWIDTH = 289
-SCREENHEIGHT = 511
+SCREENWIDTH = 350
+SCREENHEIGHT = 512
 SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 GROUNDY = SCREENHEIGHT * 0.8
 GAME_SPRITES = {}
@@ -175,7 +175,7 @@ if __name__ == "__main__":
     
     pygame.init() 
     FPSCLOCK = pygame.time.Clock()
-    pygame.display.set_caption('Flappy Bird by CodeWithHarry')
+    pygame.display.set_caption('Tap to Fly, Survive or Die! 🐦🔥')
     GAME_SPRITES['numbers'] = ( 
         pygame.image.load('gallery/sprites/0.png').convert_alpha(),
         pygame.image.load('gallery/sprites/1.png').convert_alpha(),
