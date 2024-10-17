@@ -12,12 +12,72 @@ GAME_SPRITES = {}
 GAME_SOUNDS = {}
 BACKGROUND = 'gallery/sprites/background.png'
 PIPE = 'gallery/sprites/pipe.png'
+def selectBirdScreen():
+    bird_options = ['bluebird', 'yellowbird', 'redbird']
+    selected_bird = 'bluebird'  # Default selection
 
-def load_bird_frames():
+    bird_frames = {
+        'bluebird': load_bird_frames('gallery/sprites/bluebird.png'),
+        'yellowbird': load_bird_frames('gallery/sprites/yellowbird.png'),
+        'redbird': load_bird_frames('gallery/sprites/redbird.png')
+    }
+
+    # Load the "Choose a Bird to Start" image
+    choose_bird_image = pygame.image.load('gallery/sprites/choosing.png').convert_alpha()
+    
+    # Position for the bird options on the screen
+    option_y = int(SCREENHEIGHT / 2)
+    
+    # Adjusted option_x values to make sure birds are centered and not too close to the edges
+    option_x = [SCREENWIDTH / 6, SCREENWIDTH / 2, 5 * SCREENWIDTH / 6]
+    
+    # Position for the choose_bird_image
+    choose_bird_x = (SCREENWIDTH - choose_bird_image.get_width())/2
+    choose_bird_y = SCREENHEIGHT * 0.05  # A bit below the top
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+                pygame.quit()
+                sys.exit()
+
+            # Check for arrow key inputs or mouse clicks to change the selection
+            if event.type == KEYDOWN:
+                if event.key == K_LEFT:
+                    selected_bird = bird_options[bird_options.index(selected_bird) - 1]
+                elif event.key == K_RIGHT:
+                    selected_bird = bird_options[(bird_options.index(selected_bird) + 1) % len(bird_options)]
+                elif event.key == K_RETURN:
+                    # Return the selected bird frames when Enter is pressed
+                    return bird_frames[selected_bird]
+            elif event.type == MOUSEBUTTONDOWN:
+                mouse_x, mouse_y = event.pos
+                for i, option in enumerate(bird_options):
+                    if option_x[i] - 20 < mouse_x < option_x[i] + 20 and option_y - 20 < mouse_y < option_y + 20:
+                        return bird_frames[option]
+
+        # Display the selection screen
+        SCREEN.blit(GAME_SPRITES['background'], (0, 0))
+
+        # Display the "Choose a Bird to Start" image
+        SCREEN.blit(choose_bird_image, (choose_bird_x, choose_bird_y))
+        
+        # Display the bird options
+        for i, option in enumerate(bird_options):
+            bird_image = bird_frames[option][0]
+            SCREEN.blit(bird_image, (option_x[i] - bird_image.get_width() / 2, option_y - bird_image.get_height() / 2))
+
+            # Highlight the selected option
+            if option == selected_bird:
+                pygame.draw.rect(SCREEN, (255, 0, 0), (option_x[i] - bird_image.get_width() / 2 - 5, option_y - bird_image.get_height() / 2 - 5, bird_image.get_width() + 10, bird_image.get_height() + 10), 2)
+
+        pygame.display.update()
+        FPSCLOCK.tick(FPS)
+
+
+def load_bird_frames(sprite_path):
     # Load the bird sprite sheet
-    sprite_sheet = pygame.image.load('gallery/sprites/bird_resized.png').convert_alpha()
-
-    # The width of each frame (assuming the frames are of equal size)
+    sprite_sheet = pygame.image.load(sprite_path).convert_alpha()
     frame_width = sprite_sheet.get_width() // 3
     frame_height = sprite_sheet.get_height()
 
@@ -192,7 +252,7 @@ if __name__ == "__main__":
     pygame.display.set_caption('Tap to Fly, Survive or Die! 🐦🔥')
 
     # Load bird frames (animation) from sprite sheet
-    GAME_SPRITES['player'] = load_bird_frames()
+    GAME_SPRITES['player'] = load_bird_frames('gallery/sprites/bluebird.png')
 
     # Load other game assets
     GAME_SPRITES['numbers'] = (
@@ -224,4 +284,5 @@ if __name__ == "__main__":
 
     while True:
         welcomeScreen()
+        GAME_SPRITES['player'] = selectBirdScreen()  # Get the frames for the selected bird
         mainGame()
