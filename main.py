@@ -236,7 +236,7 @@ def showGameOverScreen(score):
 
         # Display restart message
         restart_surface = font.render('Press R to restart the game', True, (255, 0, 0))
-        restart_rect = restart_surface.get_rect(center=(SCREENWIDTH / 3, SCREENHEIGHT / 2))
+        restart_rect = restart_surface.get_rect(center=(SCREENWIDTH / 2, SCREENHEIGHT / 2))
         SCREEN.blit(restart_surface, restart_rect)
 
         pygame.display.update()
