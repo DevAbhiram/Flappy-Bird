@@ -10,7 +10,7 @@ SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 GROUNDY = SCREENHEIGHT * 0.8
 GAME_SPRITES = {}
 GAME_SOUNDS = {}
-BACKGROUND = 'gallery/sprites/background.png'
+BACKGROUND = 'gallery/sprites/background_morning.png'
 PIPE = 'gallery/sprites/pipe.png'
 def selectBirdScreen():
     bird_options = ['bluebird', 'yellowbird', 'redbird']
