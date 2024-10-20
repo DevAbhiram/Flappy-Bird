@@ -157,6 +157,8 @@ def mainGame():
 
         crashTest = isCollide(playerx, playery, upperPipes, lowerPipes)
         if crashTest:
+            GAME_SOUNDS['hit'].play()
+            showGameOverScreen(score)
             return
 
         playerMidPos = playerx + GAME_SPRITES['player'][0].get_width() / 2
@@ -166,6 +168,12 @@ def mainGame():
                 score += 1
                 print(f"Your score is {score}")
                 GAME_SOUNDS['point'].play()
+
+        # Change background based on score
+        if score // 50 == 0:
+            GAME_SPRITES['background'] = pygame.image.load('gallery/sprites/background_morning.png')
+        elif score // 50 == 1:
+            GAME_SPRITES['background'] = pygame.image.load('gallery/sprites/background_night.png')
 
         if playerVelY < playerMaxVelY and not playerFlapped:
             playerVelY += playerAccY
@@ -215,6 +223,30 @@ def mainGame():
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
+
+def showGameOverScreen(score):
+    while True:
+        SCREEN.blit(GAME_SPRITES['background'], (0, 0))  # Use the current background
+
+        # Display the score
+        font = pygame.font.SysFont('Arial', 40)
+        score_surface = font.render(f'Score: {score}', True, (255, 255, 255))
+        score_rect = score_surface.get_rect(center=(SCREENWIDTH / 2, SCREENHEIGHT / 3))
+        SCREEN.blit(score_surface, score_rect)
+
+        # Display restart message
+        restart_surface = font.render('Press R to restart the game', True, (255, 0, 0))
+        restart_rect = restart_surface.get_rect(center=(SCREENWIDTH / 3, SCREENHEIGHT / 2))
+        SCREEN.blit(restart_surface, restart_rect)
+
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+                pygame.quit()
+                sys.exit()
+            if event.type == KEYDOWN and event.key == K_r:  # Restart the game
+                return  # Exit this function to restart the game
 
 def isCollide(playerx, playery, upperPipes, lowerPipes):
     if playery > GROUNDY - 25 or playery < 0:
