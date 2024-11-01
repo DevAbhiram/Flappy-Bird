@@ -4,7 +4,7 @@ import pygame
 from pygame.locals import * 
 
 FPS = 32
-SCREENWIDTH = 350
+SCREENWIDTH = 400
 SCREENHEIGHT = 512
 SCREEN = pygame.display.set_mode((SCREENWIDTH, SCREENHEIGHT))
 GROUNDY = SCREENHEIGHT * 0.8
